@@ -1,0 +1,36 @@
+body {
+    background-color: #ff4344;
+}
+/*!* font color of text *!*/
+/*body {*/
+/*    color: #ffffff;*/
+/*}*/
+
+.title {
+    font-family: 'Fredericka the Great', cursive;
+}
+
+.text {
+    font-family: 'Mountains of Christmas', cursive;
+    text-align: center;
+}
+
+.speech {
+    /* rounded with white backroughd and black border */
+    border-radius: 25px 25px 25px 0px;
+    background: #ffffff;
+    border: 2px solid #000000;
+/*    center text*/
+    text-align: center;
+
+}
+
+.speech2 {
+    /* rounded with white backroughd and black border */
+    border-radius: 0px 25px 25px 25px;
+    background: #ffffff;
+    border: 2px solid #000000;
+    /*    center text*/
+    text-align: center;
+
+}
