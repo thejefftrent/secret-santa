@@ -1,19 +1,72 @@
 let names = [
-  { name: 'Shawn', encryptedName: 'IRcL' },
-  { name: 'Darla', encryptedName: 'KBQd' },
-  { name: 'Erika', encryptedName: 'PgAAAw==' },
-  { name: 'Greg', encryptedName: 'IxoEAxo=' },
-  { name: 'Anna', encryptedName: 'LwQBAw==' },
-  { name: 'Kai', encryptedName: 'IxMHHwA=' },
-  { name: 'Braxton', encryptedName: 'IhQcAhg=' },
-  { name: 'Isla', encryptedName: 'JAIMDAA=' },
-  { name: 'Matt', encryptedName: 'IBMOCxw=' },
-  { name: 'Jeff', encryptedName: 'Lg0RAg==' },
-  { name: 'Erinn', encryptedName: 'KQ8eEQ==' },
-  { name: 'Ben', encryptedName: 'JgAMDw==' },
-  { name: 'Milo', encryptedName: 'PhweFQ==' },
-  { name: 'Erin', encryptedName: 'MB0XEw==' },
-  { name: 'Anika', encryptedName: 'LgcCEw1CHQ==' }
+  {
+      "name": "Shawn",
+      "encryptedName": "JQYPCg=="
+  },
+  {
+      "name": "Darla",
+      "encryptedName": "JRcPDBgKQw=="
+  },
+  {
+      "name": "Erika",
+      "encryptedName": "IQQc"
+  },
+  {
+      "name": "Erin",
+      "encryptedName": "JgcdC0M="
+  },
+  {
+      "name": "Greg",
+      "encryptedName": "IwUVHAI="
+  },
+  {
+      "name": "Anna",
+      "encryptedName": "OwcPEh0="
+  },
+  {
+      "name": "Kai",
+      "encryptedName": "KwAWAQ=="
+  },
+  {
+      "name": "Braxton",
+      "encryptedName": "JAIMDAA="
+  },
+  {
+      "name": "Isla",
+      "encryptedName": "LR0HBBM="
+  },
+  {
+      "name": "Jeff",
+      "encryptedName": "JQAEEQ=="
+  },
+  {
+      "name": "Erinn",
+      "encryptedName": "KQsPDQ=="
+  },
+  {
+      "name": "Ben",
+      "encryptedName": "OQQKEwgL"
+  },
+  {
+      "name": "Milo",
+      "encryptedName": "IwQcCRM="
+  },
+  {
+      "name": "Anika",
+      "encryptedName": "OgYeGw=="
+  },
+  {
+      "name": "Kenzie",
+      "encryptedName": "JBYGHA=="
+  },
+  {
+      "name": "Edwin",
+      "encryptedName": "PA4H"
+  },
+  {
+      "name": "Matt",
+      "encryptedName": "LAQIEg=="
+  }
 ]
 
 

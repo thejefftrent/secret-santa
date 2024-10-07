@@ -3,7 +3,9 @@ let families = {
   greg: {name: "Greg", members: []},
   jeff: {name: "Jeff", members: []},
   erin: {name: "Erin", members: []},
-  anika: {name: "Anika", members: []}
+  anika: {name: "Anika", members: []},
+  matt: {name: "Matt", members: []},
+  erika: {name: "Erika", members: []}
 }
 
 const christmasAdjectives = [
@@ -126,17 +128,21 @@ person("Anna", families.greg);
 person("Kai", families.greg);
 person("Braxton", families.greg);
 person("Isla", families.greg);
-person("Matt", families.greg);
+
+person("Matt", families.matt);
 
 person("Jeff", families.jeff);
 person("Erinn", families.jeff);
 person("Ben", families.jeff);
 person("Milo", families.jeff);
 
-person("Erin", families.erin);
-person("Anika", families.anika);
+person("Erin", families.shawn);
 
-let people = [...families.shawn.members, ...families.greg.members, ...families.jeff.members, ...families.erin.members, ...families.anika.members];
+person("Anika", families.anika);
+person("Kenzie", families.anika);
+person("Edwin", families.anika);
+
+let people = [...families.shawn.members, ...families.greg.members, ...families.jeff.members, ...families.erin.members, ...families.anika.members, ...families.matt.members, ...families.erika.members];
 
 //shuffle people
 // for (let i = people.length - 1; i > 0; i--) {
