@@ -114,14 +114,15 @@ const christmasWords = [
 ]
 
 function person(name, family) {
-  let person = {name: name, family: family};
+  let person = {name: name, family: family, gifted: false};
   family.members.push(person);
   return person;
 }
 
 person("Shawn", families.shawn);
 person("Darla", families.shawn);
-person("Erika", families.shawn);
+
+person("Erika", families.erika);
 
 person("Greg", families.greg);
 person("Anna", families.greg);
@@ -136,10 +137,9 @@ person("Erinn", families.jeff);
 person("Ben", families.jeff);
 person("Milo", families.jeff);
 
-person("Erin", families.shawn);
+person("Erin", families.erin);
 
 person("Anika", families.anika);
-person("Kenzie", families.anika);
 person("Edwin", families.anika);
 
 let people = [...families.shawn.members, ...families.greg.members, ...families.jeff.members, ...families.erin.members, ...families.anika.members, ...families.matt.members, ...families.erika.members];
