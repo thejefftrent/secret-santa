@@ -1,5 +1,20 @@
-body {
-    background-color: #ff4344;
+/* Global background and festive theme */
+body.bg-christmas {
+    /* Smooth festive blend: Red → White → Green */
+    background: linear-gradient(
+        180deg,
+        /* Deep red to soft red */
+        #c41e3a 0%,
+        #d34a58 18%,
+        /* Red fades to white */
+        #f5d7db 32%,
+        #ffffff 45%,
+        /* White into soft green and then deep green */
+        #dff3e8 60%,
+        #64bd86 78%,
+        #0f8a47 100%
+    );
+    min-height: 100vh;
 }
 /*!* font color of text *!*/
 /*body {*/
@@ -15,22 +30,115 @@ body {
     text-align: center;
 }
 
-.speech {
-    /* rounded with white backroughd and black border */
-    border-radius: 25px 25px 25px 0px;
-    background: #ffffff;
-    border: 2px solid #000000;
-/*    center text*/
-    text-align: center;
-
+/* Hero */
+.hero-title {
+    color: #fff;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 0 rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.25);
+    font-size: clamp(2rem, 3vw + 1rem, 3.25rem);
 }
 
-.speech2 {
-    /* rounded with white backroughd and black border */
-    border-radius: 0px 25px 25px 25px;
-    background: #ffffff;
-    border: 2px solid #000000;
-    /*    center text*/
-    text-align: center;
+header {
+    position: relative;
+}
 
+/* Snow layers */
+.snow, .snow::before, .snow::after {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+}
+.snow {
+    /* Denser, more visible flakes with mixed sizes */
+    background-image:
+        radial-gradient(3px 3px at 20px 30px, rgba(255,255,255,0.92) 50%, rgba(255,255,255,0) 51%),
+        radial-gradient(4px 4px at 80px 120px, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0) 51%),
+        radial-gradient(2px 2px at 200px 50px, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 51%),
+        radial-gradient(3px 3px at 150px 200px, rgba(255,255,255,0.92) 50%, rgba(255,255,255,0) 51%),
+        radial-gradient(2px 2px at 260px 260px, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 51%),
+        radial-gradient(4px 4px at 40px 220px, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0) 51%);
+    background-size: 200px 200px;
+    animation: snow 16s linear infinite;
+    opacity: .9;
+}
+.snow--2 { animation-duration: 26s; opacity: .7; }
+.snow--3 { animation-duration: 36s; opacity: .55; }
+
+@keyframes snow {
+    from { background-position: 0 0, 0 0, 0 0; }
+    to   { background-position: 0 300px, 0 300px, 0 300px; }
+}
+
+/* Reworked form headings: remove speech bubbles in favor of clean labels */
+.speech,
+.speech2 {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    text-align: left;
+    margin-bottom: .25rem;
+}
+.speech p,
+.speech2 p {
+    margin: 0;
+    color: #0a3622; /* deep evergreen for labels */
+    font-weight: 700;
+    letter-spacing: .3px;
+    /* Increase size for better prominence, responsive across devices */
+    font-size: clamp(1.125rem, 1.25vw + 0.75rem, 1.75rem);
+}
+
+/* Card and content styling */
+.card-christmas {
+    background: rgba(255,255,255,0.96);
+    border-radius: 1rem;
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Tone down the left accent panel */
+.bg-card-accent {
+    background: transparent;
+    color: inherit;
+}
+
+.santa-emoji {
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.2));
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(4rem, 12vw, 6.25rem);
+    height: clamp(4rem, 12vw, 6.25rem);
+    background: #ffffff;
+    border-radius: 50%;
+    border: 3px solid rgba(12, 111, 60, 0.2);
+}
+
+.cta-btn {
+    box-shadow: 0 0.5rem 1.25rem rgba(16, 101, 48, 0.28);
+}
+.cta-btn.btn-success {
+    background-color: #c41e3a;
+    border-color: #b01b34;
+}
+.cta-btn.btn-success:hover,
+.cta-btn.btn-success:focus {
+    background-color: #a61a30;
+    border-color: #8f172a;
+}
+
+.result-text {
+    color: #ffffff;
+    font-size: clamp(1.25rem, 2vw + 1rem, 2rem);
+}
+
+/* Input polish */
+.card-christmas .form-control {
+    border-radius: .75rem;
+    border-color: rgba(12,111,60,0.35);
+}
+.card-christmas .form-control:focus {
+    border-color: #0f8a47;
+    box-shadow: 0 0 0 .25rem rgba(15, 138, 71, 0.25);
 }

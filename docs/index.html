@@ -1,60 +1,86 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
 <html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ho ho ho! Merry Christmas!</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <link rel="stylesheet" href="index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&family=Mountains+of+Christmas&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <script defer src="index.js"></script>
+    <script>
+        function giveTo() {
+            const name = document.getElementById('name').value;
+            const password = document.getElementById('password').value;
+            document.getElementById('giveTo').innerHTML = getNameOrError(name, password);
+            const resultBlock = document.getElementById('resultBlock');
+            resultBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+    
 </head>
-<body>
-<!--import index.js-->
-<script src="index.js"></script>
+<body class="bg-christmas text-light">
+<header class="py-5 text-center">
+    <div class="container">
+        <h1 class="hero-title title mb-3">HO HO HO! Merry Christmas!</h1>
+        <p class="lead text">Welcome to the family Secret Santa helper. Enter your name and your ho-ho-code to see who you’re gifting.</p>
+    </div>
+    <div class="snow" aria-hidden="true"></div>
+    <div class="snow snow--2" aria-hidden="true"></div>
+    <div class="snow snow--3" aria-hidden="true"></div>
+    
+</header>
 
-<div class="container text-center">
-    <div class="row">
-        <div class="col">
-            <h1 style="font-size: 32pt; color: white" class="title">HO HO HO! Merry Christmas!</h1>
+<main>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="card card-christmas shadow-lg border-0 overflow-hidden">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-12 col-md-4 text-center p-4 bg-card-accent">
+                            <div class="santa-emoji" role="img" aria-label="Santa">🎅</div>
+                        </div>
+                        <div class="col-12 col-md-8 p-4 p-md-5">
+                            <div class="mb-3">
+                                <div class="speech">
+                                    <p class="mb-0 text-dark text">Please tell me your name!</p>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <input type="text" name="name" class="form-control form-control-lg" id="name" placeholder="Type your name here" autocomplete="name">
+                            </div>
+                            <div class="mb-3">
+                                <div class="speech2">
+                                    <p class="mb-0 text-dark text">And your secret ho ho ho code!</p>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <input type="password" name="password" id="password" class="form-control form-control-lg" placeholder="Your secret code (don’t tell anyone)" autocomplete="off">
+                            </div>
+                            <div class="d-grid">
+                                <button type="button" class="btn btn-success btn-lg cta-btn" onclick="giveTo()">Get Your Secret Person</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultBlock" class="row justify-content-center mt-4">
+            <div class="col-12 col-lg-10 text-center">
+                <p id="giveTo" class="result-text text"></p>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-4">
-            <span style="font-size: 72pt">🎅</span>
-        </div>
-        <div class="col">
-            <div class="speech row">
-                <p style="font-size: 16pt" class="text">Please tell me your name!</p>
-            </div>
-            <div class="row" style="margin-left: 1em; margin-right: 1em; margin-top: 1em">
-                <input type="text" name="name" class="form-control" id="name" placeholder="type your name here"/>
-            </div>
-            <div class="speech2 row" style="margin-top: 1em">
-                <p style="font-size: 16pt" class="text">And your secret ho ho ho code!</p>
-            </div>
-            <div class="row" style="margin-left: 1em; margin-right: 1em; margin-top: 1em">
-                <input name="password" id="password" class="form-control" placeholder="your secret code (don't tell anyone)" />
-            </div>
-        </div>
-    </div>
-    <div class="row" style="margin-right: 1em; margin-left: 1em;  margin-top: 1em">
-        <button type="submit" class="btn btn-primary" style="background: green" value="Submit" onclick="giveTo()">Get Your Secret Person</button>
-    </div>
-</div>
+</main>
 
-<p id="giveTo" class="text" style="color: white; font-size: 24pt"></p>
-<script>
-    //function that runs on submit
-    function giveTo() {
-      console.log("Hello");
-        //get the value of the name input
-        var name = document.getElementById("name").value;
-        //get the value of the password input
-        var password = document.getElementById("password").value;
+<footer class="py-5 text-center small text-muted">
+    <div class="container">
+        <span>Made with love, cocoa, and a pinch of Christmas magic.</span>
+    </div>
+</footer>
 
-        document.getElementById("giveTo").innerHTML = getNameOrError(name, password);
-    }
-</script>
 </body>
 </html>
