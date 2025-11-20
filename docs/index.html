@@ -36,13 +36,19 @@
 <main>
     <div class="container">
         <div class="row justify-content-center">
+            <div id="resultBlock" class="row justify-content-center mt-4">
+                <div class="col-12 col-lg-10 text-center">
+                    <p id="giveTo" class="result-text text"></p>
+                </div>
+            </div>
             <div class="col-12 col-md-10 col-lg-8">
+                    <!-- Santa peeking image -->
+                    <div class="santa-peek" aria-hidden="true">
+                        <img src="santa.png" alt="Santa peeking over the edge" />
+                    </div>
                 <div class="card card-christmas shadow-lg border-0 overflow-hidden">
                     <div class="row g-0 align-items-center">
-                        <div class="col-12 col-md-4 text-center p-4 bg-card-accent">
-                            <div class="santa-emoji" role="img" aria-label="Santa">🎅</div>
-                        </div>
-                        <div class="col-12 col-md-8 p-4 p-md-5">
+                        <div class="col-12 col-md-12 p-4 p-md-5">
                             <div class="mb-3">
                                 <div class="speech">
                                     <p class="mb-0 text-dark text">Please tell me your name!</p>
@@ -57,7 +63,7 @@
                                 </div>
                             </div>
                             <div class="mb-4">
-                                <input type="password" name="password" id="password" class="form-control form-control-lg" placeholder="Your secret code (don’t tell anyone)" autocomplete="off">
+                                <input type="text" name="password" id="password" class="form-control form-control-lg" placeholder="Your secret code (don’t tell anyone)" autocomplete="off">
                             </div>
                             <div class="d-grid">
                                 <button type="button" class="btn btn-success btn-lg cta-btn" onclick="giveTo()">Get Your Secret Person</button>
@@ -68,11 +74,7 @@
             </div>
         </div>
 
-        <div id="resultBlock" class="row justify-content-center mt-4">
-            <div class="col-12 col-lg-10 text-center">
-                <p id="giveTo" class="result-text text"></p>
-            </div>
-        </div>
+
     </div>
 </main>
 
