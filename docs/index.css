@@ -98,6 +98,122 @@ header {
     z-index: 2;
 }
 
+/* Festive blinking "Christmas lights" border around the form card */
+.card-christmas::before,
+.card-christmas::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    border-radius: calc(1rem + 12px); /* follow card rounding while sitting outside */
+    z-index: 3; /* render above the card background but non-interactive */
+}
+
+/* Top & bottom strands */
+.card-christmas::before {
+    /* sit slightly outside the card so it reads like a border */
+    inset: -14px -16px; /* top/bottom, left/right */
+    /* Build per-bulb multicolor rows using color stripes clipped by circular masks */
+    /* Two color layers (top & bottom) + two wire layers */
+    background:
+        /* top color stripes (horizontal) */
+        repeating-linear-gradient(to right,
+            #ff4d4d 0 24px,   /* red */
+            #ffd60a 24px 48px,/* yellow */
+            #34d399 48px 72px,/* green */
+            #60a5fa 72px 96px,/* blue */
+            #f472b6 96px 120px,/* pink */
+            #22d3ee 120px 144px /* cyan */
+        ),
+        /* bottom color stripes (horizontal) */
+        repeating-linear-gradient(to right,
+            #ff4d4d 0 24px,
+            #ffd60a 24px 48px,
+            #34d399 48px 72px,
+            #60a5fa 72px 96px,
+            #f472b6 96px 120px,
+            #22d3ee 120px 144px
+        ),
+        /* subtle wire lines */
+        linear-gradient(#0f2a1f, #0f2a1f) top center / 100% 2px no-repeat,
+        linear-gradient(#0f2a1f, #0f2a1f) bottom center / 100% 2px no-repeat;
+
+    /* Mask the two color layers into circular bulbs on top and bottom rows */
+    -webkit-mask:
+        radial-gradient(closest-side, #000 72%, transparent 74%) top center / 24px 20px repeat-x,
+        radial-gradient(closest-side, #000 72%, transparent 74%) bottom center / 24px 20px repeat-x,
+        none,
+        none;
+    mask:
+        radial-gradient(closest-side, #000 72%, transparent 74%) top center / 24px 20px repeat-x,
+        radial-gradient(closest-side, #000 72%, transparent 74%) bottom center / 24px 20px repeat-x,
+        none,
+        none;
+
+    /* Soft twinkle animation only (no uniform hue-rotate) */
+    animation: twinkle 2.6s ease-in-out infinite alternate;
+}
+
+/* Left & right strands */
+.card-christmas::after {
+    inset: -16px -14px;
+    /* Two color layers (left & right) + two wire layers */
+    background:
+        /* left color stripes (vertical) */
+        repeating-linear-gradient(to bottom,
+            #ff4d4d 0 24px,
+            #ffd60a 24px 48px,
+            #34d399 48px 72px,
+            #60a5fa 72px 96px,
+            #f472b6 96px 120px,
+            #22d3ee 120px 144px
+        ),
+        /* right color stripes (vertical) */
+        repeating-linear-gradient(to bottom,
+            #ff4d4d 0 24px,
+            #ffd60a 24px 48px,
+            #34d399 48px 72px,
+            #60a5fa 72px 96px,
+            #f472b6 96px 120px,
+            #22d3ee 120px 144px
+        ),
+        /* wire lines */
+        linear-gradient(#0f2a1f, #0f2a1f) left center / 2px 100% no-repeat,
+        linear-gradient(#0f2a1f, #0f2a1f) right center / 2px 100% no-repeat;
+
+    /* Mask the two color layers into circular bulbs on left and right columns */
+    -webkit-mask:
+        radial-gradient(closest-side, #000 72%, transparent 74%) left center / 20px 24px repeat-y,
+        radial-gradient(closest-side, #000 72%, transparent 74%) right center / 20px 24px repeat-y,
+        none,
+        none;
+    mask:
+        radial-gradient(closest-side, #000 72%, transparent 74%) left center / 20px 24px repeat-y,
+        radial-gradient(closest-side, #000 72%, transparent 74%) right center / 20px 24px repeat-y,
+        none,
+        none;
+
+    /* Soft twinkle animation only */
+    animation: twinkle 3.2s ease-in-out infinite alternate;
+}
+
+/* Removed global side-wide hue rotations so each bulb can have its own color */
+
+/* Gentle blinking (twinkling) without being distracting */
+@keyframes twinkle {
+    0%   { opacity: .4; }
+    50%  { opacity: 1; }
+    100% { opacity: .4; }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .card-christmas::before,
+    .card-christmas::after {
+        animation: none;
+        filter: none;
+    }
+}
+
 /* Tone down the left accent panel */
 .bg-card-accent {
     background: transparent;
