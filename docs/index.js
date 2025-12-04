@@ -1,21 +1,40 @@
 let names = [
-  { name: 'Shawn', encryptedName: 'LgENHQ==' },
-  { name: 'Darla', encryptedName: 'Kx0TAg==' },
-  { name: 'Greg', encryptedName: 'JBcH' },
-  { name: 'Anna', encryptedName: 'NQkPFBc=' },
-  { name: 'Kai', encryptedName: 'LQsZDB0=' },
-  { name: 'Braxton', encryptedName: 'LR0HAQ==' },
-  { name: 'Isla', encryptedName: 'NQAGGwo=' },
-  { name: 'Jeff', encryptedName: 'MwEDAA==' },
-  { name: 'Erinn', encryptedName: 'KQQYHQ==' },
-  { name: 'Ben', encryptedName: 'NQAGHgU=' },
-  { name: 'Milo', encryptedName: 'MQsbDQQ=' },
-  { name: 'Erin', encryptedName: 'PQAF' },
-  { name: 'Anika', encryptedName: 'MgAODRBCHg==' },
-  { name: 'Edwin', encryptedName: 'LQoJAg==' },
-  { name: 'Matt', encryptedName: 'Ng4fDQ8=' },
-  { name: 'Erika', encryptedName: 'KwENFw==' }
+  { name: 'Shawn', encryptedName: 'LgENHQ=='},
+  { name: 'Darla', encryptedName: 'Kx0TAg=='},
+  { name: 'Greg', encryptedName: 'JBcH'},
+  { name: 'Anna', encryptedName: 'NQkPFBc='},
+  { name: 'Kai', encryptedName: 'LQsZDB0='},
+  { name: 'Braxton', encryptedName: 'LR0HAQ=='},
+  { name: 'Isla', encryptedName: 'NQAGGwo='},
+  { name: 'Jeff', encryptedName: 'MwEDAA=='},
+  { name: 'Erinn', encryptedName: 'KQQYHQ=='},
+  { name: 'Ben', encryptedName: 'NQAGHgU='},
+  { name: 'Milo', encryptedName: 'MQsbDQQ='},
+  { name: 'Erin', encryptedName: 'PQAF'},
+  { name: 'Anika', encryptedName: 'MgAODRBCHg=='},
+  { name: 'Edwin', encryptedName: 'LQoJAg=='},
+  { name: 'Matt', encryptedName: 'Ng4fDQ8='},
+  { name: 'Erika', encryptedName: 'KwENFw=='},
 ]
+
+let gifts = {
+  'Shawn': [],
+  'Darla': [],
+  'Anna': [],
+  'Greg': [],
+  'Kai': [],
+  'Braxton': [],
+  'Isla': [],
+  'Jeff': [],
+  'Erinn': [],
+  'Ben': [],
+  'Milo': [],
+  'Erin': [],
+  'Anika': [],
+  'Edwin': [],
+  'Matt': [],
+  'Erika': [],
+}
 
 
 //base 64 decode
@@ -55,14 +74,22 @@ function getNameOrError(name, code) {
   let nameInList = names.find(person => person.name.toLowerCase() === name.toLowerCase());
   if (nameInList) {
     let decodedName = getDecodedName(name, code);
+    let personalGift = gifts[decodedName];
     //trim spaces from decoded name
     decodedName = decodedName.trim();
     //check to see if decoded name is in names list
     let decodedNameInList = names.find(person => person.name.toLowerCase() === decodedName.toLowerCase());
-    if (decodedNameInList) {
 
-      return `You are giving a gift to <br> <b style="font-size: 72pt">${decodedName}</b>`;
+      if (personalGift === undefined || personalGift.length === 0) {
+
+       return `You are giving a gift to <br> <b style="font-size: 72pt">${decodedName + "<br>There are no gifts for this person!!!"}</b>`;
+    } 
+
+    else if (decodedNameInList) {
+
+      return `You are giving a gift to <br> <b style="font-size: 72pt">${decodedName} <br> they want: </b>` + "<br><ul>" + personalGift.map(gift => `<li>${gift}</li>`).join('') + "</ul>";
     }
+
     return "Oops! Make sure you entered the correct code!";
   }
   return "Oops! Make sure you spelled your name correctly!";
