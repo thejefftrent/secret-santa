@@ -25,7 +25,7 @@ let gifts = {
   'Kai': [],
   'Braxton': [],
   'Isla': [],
-  'Jeff': ["Test"],
+  'Jeff': [],
   'Erinn': [],
   'Ben': [],
   'Milo': [],
