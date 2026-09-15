@@ -25,7 +25,7 @@ let gifts = {
   'Kai': [],
   'Braxton': [],
   'Isla': [],
-  'Jeff': [],
+  'Jeff': ["Active volcano", "Red Rider BB Gun", "Optimus Prime Action Figure"],
   'Erinn': [],
   'Ben': [],
   'Milo': [],
