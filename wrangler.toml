@@ -6,8 +6,8 @@ compatibility_date = "2026-10-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "secret-santa"
-# Replace with the id printed by `npx wrangler d1 create secret-santa` (see README).
-database_id = "00000000-0000-0000-0000-000000000000"
+# From `npx wrangler d1 create secret-santa` (see README).
+database_id = "cf24436e-35da-4eb9-afba-7e9cc390abdf"
 migrations_dir = "migrations"
 
 [vars]
