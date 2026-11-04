@@ -1,0 +1,15 @@
+# Cloudflare Pages project: static site in ./public, API in ./functions, data in D1.
+name = "secret-santa"
+pages_build_output_dir = "./public"
+compatibility_date = "2026-10-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "secret-santa"
+# From `npx wrangler d1 create secret-santa` (see README).
+database_id = "cf24436e-35da-4eb9-afba-7e9cc390abdf"
+migrations_dir = "migrations"
+
+[vars]
+# Who can draw names for a new year (comma-separated names, as on the site).
+ADMINS = "Jeff"

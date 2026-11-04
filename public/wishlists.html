@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Family Wishlists</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&family=Mountains+of+Christmas:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="/santa.png">
+    <link rel="stylesheet" href="index.css">
+    <script type="module" src="wishlists.js"></script>
+</head>
+<body class="bg-christmas text-light">
+<nav class="site-nav" aria-label="Main">
+    <a href="/">Secret Santa</a>
+    <a href="/wishlists" aria-current="page">Wishlists</a>
+    <a href="/account">My Account</a>
+</nav>
+
+<header class="py-4 text-center">
+    <div class="container">
+        <h1 class="hero-title title mb-2">Christmas Wishlists</h1>
+        <p class="lead text mb-0">What everyone in the family is hoping Santa brings.</p>
+    </div>
+    <div class="snow" aria-hidden="true"></div>
+    <div class="snow snow--2" aria-hidden="true"></div>
+</header>
+
+<main class="container pb-5">
+    <p id="status" class="text-center status-text" role="status">Checking Santa's list…</p>
+    <div id="households" class="row g-4"></div>
+    <p id="ownListLink" class="text-center mt-5">
+        <a class="btn btn-light btn-lg cta-outline" href="/account">Add to your own list</a>
+    </p>
+</main>
+
+<footer class="py-5 text-center small text-muted">
+    <div class="container">
+        <span>Made with love, cocoa, and a pinch of Christmas magic.</span>
+    </div>
+</footer>
+</body>
+</html>

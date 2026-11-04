@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Christmas List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&family=Mountains+of+Christmas:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="/santa.png">
+    <link rel="stylesheet" href="index.css">
+    <script type="module" src="account.js"></script>
+</head>
+<body class="bg-christmas text-light">
+<nav class="site-nav" aria-label="Main">
+    <a href="/">Secret Santa</a>
+    <a href="/wishlists">Wishlists</a>
+    <a href="/account" aria-current="page">My Account</a>
+</nav>
+
+<header class="py-4 text-center">
+    <div class="container">
+        <h1 class="hero-title title mb-2">My Christmas List</h1>
+        <p id="greeting" class="lead text mb-0">Sign in to tell Santa what you'd like this year.</p>
+    </div>
+    <div class="snow" aria-hidden="true"></div>
+    <div class="snow snow--2" aria-hidden="true"></div>
+</header>
+
+<main class="container pb-5">
+    <p id="status" class="text-center status-text" role="status">Checking Santa's list…</p>
+
+    <!-- Signed out: sign in or create an account -->
+    <section id="signedOut" class="row justify-content-center" hidden>
+        <div class="col-12 col-md-9 col-lg-6">
+            <div class="panel">
+                <div class="tabs" role="tablist">
+                    <button type="button" role="tab" id="tabSignin" aria-controls="signinForm" aria-selected="true">Sign in</button>
+                    <button type="button" role="tab" id="tabSignup" aria-controls="signupForm" aria-selected="false">I'm new here</button>
+                </div>
+
+                <form id="signinForm" role="tabpanel" aria-labelledby="tabSignin" novalidate>
+                    <label class="form-label" for="signinName">Your name</label>
+                    <input class="form-control form-control-lg mb-3" type="text" id="signinName" autocomplete="username" autocapitalize="words" spellcheck="false" maxlength="40" required>
+                    <label class="form-label" for="signinPassword">Password</label>
+                    <input class="form-control form-control-lg mb-3" type="password" id="signinPassword" autocomplete="current-password" required>
+                    <p class="form-error" role="alert"></p>
+                    <button type="submit" class="btn btn-success btn-lg cta-btn w-100">Sign in</button>
+                    <p class="hint mt-3 mb-0">Forgot your password? Ask the Secret Santa organizer to reset it, then sign up again.</p>
+                </form>
+
+                <form id="signupForm" role="tabpanel" aria-labelledby="tabSignup" novalidate hidden>
+                    <label class="form-label" for="signupName">Your name</label>
+                    <input class="form-control form-control-lg" type="text" id="signupName" autocomplete="username" autocapitalize="words" spellcheck="false" maxlength="40" required>
+                    <p class="hint mt-1 mb-3">Your <em>first</em> name. Not case-sensitive.</p>
+                    <label class="form-label" for="signupPassword">Choose a password</label>
+                    <input class="form-control form-control-lg" type="password" id="signupPassword" autocomplete="new-password" minlength="8" required>
+                    <p class="hint mt-1 mb-3">At least 8 characters.</p>
+                    <label class="form-label" for="familyCode">Family code</label>
+                    <input class="form-control form-control-lg" type="text" id="familyCode" autocomplete="off" autocapitalize="off" spellcheck="false" required>
+                    <p class="hint mt-1 mb-3">Each family group has its own code. Ask the organizer for yours.</p>
+                    <p class="form-error" role="alert"></p>
+                    <button type="submit" class="btn btn-success btn-lg cta-btn w-100">Create my account</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Signed in: edit every list in your household -->
+    <section id="signedIn" hidden>
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+            <p id="hello" class="hello mb-0"></p>
+            <div class="d-flex gap-2">
+                <a class="btn btn-outline-light" href="/wishlists">See everyone's lists</a>
+                <button type="button" id="signOut" class="btn btn-outline-light">Sign out</button>
+            </div>
+        </div>
+        <p id="listError" class="alert alert-danger" role="alert" hidden></p>
+        <div id="lists" class="row g-4"></div>
+
+        <div class="row g-4 mt-1">
+            <div id="addMemberCol" class="col-12 col-lg-6">
+                <form id="addMemberForm" class="panel h-100" novalidate>
+                    <h2 class="panel__title">Add someone to your household</h2>
+                    <p class="hint">For a new baby, a partner, or anyone else whose list you'll keep. They can sign up later with their own password.</p>
+                    <div class="input-group">
+                        <input class="form-control" type="text" id="memberName" placeholder="Their name" maxlength="40" required aria-label="Their name">
+                        <select class="form-select member-role" id="memberRole" aria-label="Kid or adult">
+                            <option value="kid">Kid</option>
+                            <option value="adult">Adult</option>
+                        </select>
+                        <button type="submit" class="btn btn-success cta-btn">Add</button>
+                    </div>
+                    <p class="form-error mt-2 mb-0" role="alert"></p>
+                </form>
+            </div>
+            <div class="col-12 col-lg-6">
+                <details class="panel h-100">
+                    <summary class="panel__title">Change my password</summary>
+                    <form id="passwordForm" class="mt-3" novalidate>
+                        <label class="form-label" for="currentPassword">Current password</label>
+                        <input class="form-control mb-2" type="password" id="currentPassword" autocomplete="current-password" required>
+                        <label class="form-label" for="newPassword">New password</label>
+                        <input class="form-control mb-2" type="password" id="newPassword" autocomplete="new-password" minlength="8" required>
+                        <p class="form-error" role="alert"></p>
+                        <button type="submit" class="btn btn-success cta-btn">Save password</button>
+                    </form>
+                </details>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<footer class="py-5 text-center small text-muted">
+    <div class="container">
+        <span>Made with love, cocoa, and a pinch of Christmas magic.</span>
+    </div>
+</footer>
+</body>
+</html>

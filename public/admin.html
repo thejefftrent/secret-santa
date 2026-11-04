@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Santa's Workshop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&family=Mountains+of+Christmas:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="/santa.png">
+    <link rel="stylesheet" href="index.css">
+    <script type="module" src="admin.js"></script>
+</head>
+<body class="bg-christmas text-light">
+<nav class="site-nav" aria-label="Main">
+    <a href="/">Secret Santa</a>
+    <a href="/wishlists">Wishlists</a>
+    <a href="/account">My Account</a>
+    <a href="/admin" aria-current="page">Admin</a>
+</nav>
+
+<header class="py-4 text-center">
+    <div class="container">
+        <h1 class="hero-title title mb-2">Santa's Workshop</h1>
+        <p class="lead text mb-0">Family groups, the draw, and who has whom.</p>
+    </div>
+    <div class="snow" aria-hidden="true"></div>
+    <div class="snow snow--2" aria-hidden="true"></div>
+</header>
+
+<main class="container pb-5">
+    <p id="status" class="text-center status-text" role="status">Checking Santa's list…</p>
+
+    <section id="gate" class="row justify-content-center" hidden>
+        <div class="col-12 col-md-9 col-lg-6">
+            <div class="panel text-center">
+                <h2 class="panel__title">Elves only</h2>
+                <p id="gateMessage"></p>
+                <a id="gateSignIn" class="btn btn-success btn-lg cta-btn" href="/account?next=/admin">Sign in</a>
+            </div>
+        </div>
+    </section>
+
+    <div id="adminContent" hidden>
+        <!-- Family groups -->
+        <section class="panel mb-5" aria-labelledby="familyTitle">
+            <h2 id="familyTitle" class="panel__title">Family groups</h2>
+            <p class="hint">Each family group is a household with its own sign-up code: give it to the people in that group so they can create their accounts. Adults in a group manage everyone's lists and can see everyone's Secret Santa person. Kids only see their own. Nobody draws someone from their own group.</p>
+            <p id="familyMessage" class="alert" role="status" hidden></p>
+            <div id="families" class="row g-4"></div>
+
+            <form id="addPersonForm" class="admin-add mt-4" novalidate>
+                <h3 class="h6 fw-bold mb-2">Add someone</h3>
+                <div class="row g-2 align-items-center">
+                    <div class="col-12 col-md-4">
+                        <input class="form-control" type="text" id="newName" placeholder="Name" maxlength="40" aria-label="Name" required>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <select class="form-select" id="newHousehold" aria-label="Family group"></select>
+                    </div>
+                    <div class="col-6 col-md-2">
+                        <label class="form-check mb-0"><input class="form-check-input" type="checkbox" id="newIsKid"> <span class="form-check-label">Kid</span></label>
+                    </div>
+                    <div class="col-6 col-md-2 d-grid">
+                        <button type="submit" class="btn btn-success cta-btn">Add</button>
+                    </div>
+                </div>
+                <p class="form-error mt-2 mb-0" role="alert"></p>
+            </form>
+        </section>
+
+        <!-- Run the draw -->
+        <section class="panel mb-5" aria-labelledby="drawTitle">
+            <h2 id="drawTitle" class="panel__title">Secret Santa draw</h2>
+            <p id="drawSummary" class="mb-2"></p>
+            <p id="noAccounts" class="hint" hidden></p>
+            <p id="drawResult" class="alert alert-success" role="status" hidden></p>
+            <form id="drawForm" novalidate>
+                <h3 class="h6 fw-bold">Draw names for a year</h3>
+                <p class="hint">Nobody gets someone from their own family group. The draw also avoids giving anyone the same person as last year, and gives each family group people from different families than last year wherever it can.</p>
+                <label class="form-label" for="drawYear">Year</label>
+                <input type="number" id="drawYear" class="form-control mb-3 year-input" min="2000" max="2100" required>
+                <fieldset class="mb-2">
+                    <legend class="form-label fs-6">Who's in the draw?</legend>
+                    <div id="participants" class="participants"></div>
+                </fieldset>
+                <p class="form-error" role="alert"></p>
+                <button type="submit" class="btn btn-success cta-btn">Draw names</button>
+            </form>
+        </section>
+
+        <!-- Who has whom -->
+        <section class="panel" aria-labelledby="pairsTitle">
+            <h2 id="pairsTitle" class="panel__title">Who has whom</h2>
+            <p class="hint">Hidden until you ask, in case anyone's looking over your shoulder.</p>
+            <div id="pairsControls" class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                <label class="form-label mb-0" for="pairsYear">Year</label>
+                <select class="form-select pairs-year" id="pairsYear"></select>
+                <button type="button" id="togglePairs" class="btn btn-success cta-btn">Show who has whom</button>
+                <button type="button" id="deleteDraw" class="btn btn-outline-danger">Delete this draw</button>
+            </div>
+            <p id="noDraws" class="mb-0" hidden>No names have been drawn yet.</p>
+            <p id="pairsMessage" class="form-error" role="alert"></p>
+            <div id="pairs" hidden></div>
+        </section>
+    </div>
+</main>
+
+<footer class="py-5 text-center small text-muted">
+    <div class="container">
+        <span>Made with love, cocoa, and a pinch of Christmas magic.</span>
+    </div>
+</footer>
+</body>
+</html>
