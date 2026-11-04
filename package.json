@@ -1,0 +1,16 @@
+{
+  "name": "secret-santa",
+  "private": true,
+  "description": "Family Secret Santa lookup and Christmas wishlists on Cloudflare Pages + D1",
+  "scripts": {
+    "dev": "wrangler pages dev",
+    "db:migrate:local": "wrangler d1 migrations apply secret-santa --local",
+    "db:migrate:remote": "wrangler d1 migrations apply secret-santa --remote",
+    "test": "node --test",
+    "import-draw": "node scripts/import-draw.js"
+  },
+  "devDependencies": {
+    "wrangler": "^4.157.0"
+  },
+  "type": "module"
+}

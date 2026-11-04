@@ -1,2 +1,11 @@
+# Secret Santa draw output (people.js)
 secretlist.json
 codelist.json
+
+# Cloudflare / Node
+node_modules/
+.wrangler/
+.dev.vars
+
+# Secret Santa draw imports say who has whom
+draw-*.sql

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ho ho ho! Merry Christmas!</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&family=Mountains+of+Christmas:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="/santa.png">
+    <link rel="stylesheet" href="index.css">
+    <script type="module" src="index.js"></script>
+</head>
+<body class="bg-christmas text-light">
+<nav class="site-nav" aria-label="Main">
+    <a href="/" aria-current="page">Secret Santa</a>
+    <a href="/wishlists">Wishlists</a>
+    <a href="/account">My Account</a>
+</nav>
+<header class="py-5 text-center">
+    <div class="container">
+        <h1 class="hero-title title mb-3">HO HO HO! Merry Christmas!</h1>
+        <p class="lead text">Welcome to the family Secret Santa helper. Sign in to see who you’re gifting and what they’re wishing for.</p>
+    </div>
+    <div class="snow" aria-hidden="true"></div>
+    <div class="snow snow--2" aria-hidden="true"></div>
+    <div class="snow snow--3" aria-hidden="true"></div>
+    
+</header>
+
+<main>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div id="resultBlock" class="row justify-content-center mt-4">
+                <div class="col-12 col-lg-10 text-center">
+                    <div id="giveTo" class="result-text text" aria-live="polite"></div>
+                </div>
+            </div>
+            <div class="col-12 col-md-10 col-lg-8">
+                    <!-- Santa peeking image -->
+                    <div class="santa-peek" aria-hidden="true">
+                        <img src="santa.png" alt="Santa peeking over the edge" />
+                    </div>
+                <div class="card card-christmas shadow-lg border-0 overflow-hidden">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-12 p-4 p-md-5">
+                            <p id="loading" class="text-dark text-center mb-0" role="status">Checking Santa's list…</p>
+
+                            <!-- Signed out: sign in right here -->
+                            <form id="signinForm" novalidate hidden>
+                                <div class="mb-3">
+                                    <div class="speech">
+                                        <label for="name" class="mb-0 text-dark text">Please tell me your name!</label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <input type="text" name="name" class="form-control form-control-lg" id="name" placeholder="Type your name here" autocomplete="username" autocapitalize="words" spellcheck="false" maxlength="40">
+                                </div>
+                                <div class="mb-3">
+                                    <div class="speech2">
+                                        <label for="password" class="mb-0 text-dark text">And your password!</label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <input type="password" name="password" id="password" class="form-control form-control-lg" placeholder="Your password (don’t tell anyone)" autocomplete="current-password">
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success btn-lg cta-btn">Get Your Secret Person</button>
+                                </div>
+                                <p class="text-dark text-center mt-4 mb-1 signup-nudge">
+                                    New here? <a href="/account?tab=signup&amp;next=/">Create your account</a> to see your person.
+                                </p>
+                                <p class="hint text-center mb-0">Forgot your password? Ask the Secret Santa organizer to reset it.</p>
+                            </form>
+
+                            <!-- Signed in: reveal your person (and kids' in your household) -->
+                            <div id="signedInView" hidden>
+                                <div class="speech mb-2">
+                                    <p id="hello" class="mb-0 text-dark text"></p>
+                                </div>
+                                <p id="drawStatus" class="text-dark mb-4"></p>
+                                <div class="d-grid">
+                                    <button type="button" id="revealMine" class="btn btn-success btn-lg cta-btn">Get Your Secret Person</button>
+                                </div>
+                                <div id="householdReveal" class="household-reveal mt-4" hidden>
+                                    <p class="hint mb-2">Shopping together? You can see who the rest of your household is gifting too.</p>
+                                    <div id="householdButtons" class="d-flex flex-wrap gap-2"></div>
+                                </div>
+                                <p class="hint text-center mt-4 mb-0">Not you? <button type="button" id="signOut" class="btn btn-link btn-sm p-0 align-baseline">Sign out</button></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center mt-5 mb-0">
+                    <a class="btn btn-light btn-lg cta-outline" href="/account">Add your own Christmas list</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="py-5 text-center small text-muted">
+    <div class="container">
+        <span>Made with love, cocoa, and a pinch of Christmas magic.</span>
+    </div>
+</footer>
+
+</body>
+</html>

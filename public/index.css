@@ -80,7 +80,9 @@ header {
     margin-bottom: .25rem;
 }
 .speech p,
-.speech2 p {
+.speech2 p,
+.speech label,
+.speech2 label {
     margin: 0;
     color: #0a3622; /* deep evergreen for labels */
     font-weight: 700;
@@ -100,7 +102,11 @@ header {
 
 /* Festive blinking "Christmas lights" border around the form card */
 .card-christmas::before,
-.card-christmas::after {
+.card-christmas::after,
+.wish-card::before,
+.wish-card::after,
+.panel::before,
+.panel::after {
     content: "";
     position: absolute;
     pointer-events: none;
@@ -109,7 +115,9 @@ header {
 }
 
 /* Top & bottom strands */
-.card-christmas::before {
+.card-christmas::before,
+.wish-card::before,
+.panel::before {
     /* sit slightly outside the card so it reads like a border */
     inset: -14px -16px; /* top/bottom, left/right */
     /* Build per-bulb multicolor rows using color stripes clipped by circular masks */
@@ -154,7 +162,9 @@ header {
 }
 
 /* Left & right strands */
-.card-christmas::after {
+.card-christmas::after,
+.wish-card::after,
+.panel::after {
     inset: -16px -14px;
     /* Two color layers (left & right) + two wire layers */
     background:
@@ -208,7 +218,11 @@ header {
 /* Respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
     .card-christmas::before,
-    .card-christmas::after {
+    .card-christmas::after,
+    .wish-card::before,
+    .wish-card::after,
+    .panel::before,
+    .panel::after {
         animation: none;
         filter: none;
     }
@@ -350,4 +364,421 @@ footer.text-muted .container > span {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
+}
+/* ---------- Shared site chrome (nav, panels, wishlists) ---------- */
+
+.site-nav {
+    position: relative;
+    z-index: 20;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .5rem;
+    padding: .9rem 1rem 0;
+}
+.site-nav a {
+    color: rgba(255, 255, 255, 0.88);
+    text-decoration: none;
+    font-weight: 600;
+    padding: .4rem .95rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+}
+.site-nav a:hover,
+.site-nav a:focus-visible {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+}
+.site-nav a[aria-current="page"] {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.28);
+}
+
+main {
+    position: relative;
+    z-index: 2;
+}
+
+.status-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.15rem;
+}
+
+.cta-outline {
+    color: #0a3622;
+    font-weight: 600;
+    border-radius: 999px;
+    padding-inline: 1.5rem;
+}
+
+/* White content panels (forms, settings) */
+.panel {
+    /* Christmas-light border, same as the home page card (see .card-christmas::before/::after) */
+    position: relative;
+    overflow: hidden;
+    display: block;
+    background: rgba(255, 255, 255, 0.96);
+    color: #1f2937;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.25);
+}
+.panel__title {
+    font-family: 'Mountains of Christmas', cursive;
+    font-weight: 700;
+    color: #0a3622;
+    font-size: 1.6rem;
+    margin-bottom: .5rem;
+    cursor: default;
+}
+summary.panel__title {
+    cursor: pointer;
+    margin-bottom: 0;
+}
+.panel .form-label {
+    font-weight: 600;
+    color: #0a3622;
+    margin-bottom: .25rem;
+}
+.panel .form-control,
+.panel .form-select {
+    border-radius: .75rem;
+    border-color: rgba(12, 111, 60, 0.35);
+}
+.panel .form-control:focus,
+.panel .form-select:focus,
+.wish-card .form-control:focus {
+    border-color: #0f8a47;
+    box-shadow: 0 0 0 .25rem rgba(15, 138, 71, 0.25);
+}
+.hint {
+    color: #4b5563;
+    font-size: .9rem;
+}
+.form-error {
+    color: #b01b34;
+    font-weight: 600;
+    min-height: 0;
+}
+.form-error:empty {
+    display: none;
+}
+
+/* Sign in / sign up tabs */
+.tabs {
+    display: flex;
+    gap: .25rem;
+    padding: .25rem;
+    margin-bottom: 1.25rem;
+    background: #eef3ef;
+    border-radius: 999px;
+}
+.tabs button {
+    flex: 1;
+    border: 0;
+    background: transparent;
+    padding: .55rem 1rem;
+    border-radius: 999px;
+    font-weight: 600;
+    color: #374151;
+}
+.tabs button[aria-selected="true"] {
+    background: #fff;
+    color: #0a3622;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+.hello {
+    font-family: 'Mountains of Christmas', cursive;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 2vw + 1rem, 2.25rem);
+}
+
+/* Wishlist cards */
+.wish-card {
+    background: rgba(255, 255, 255, 0.96);
+    color: #1f2937;
+    border-radius: 1rem;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.25);
+    /* Christmas-light border, same as the home page card */
+    position: relative;
+    overflow: hidden;
+}
+.wish-card__title {
+    font-family: 'Mountains of Christmas', cursive;
+    font-weight: 700;
+    color: #0a3622;
+    font-size: 1.75rem;
+    margin-bottom: .75rem;
+}
+.wish-person + .wish-person {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed rgba(10, 54, 34, 0.2);
+}
+.wish-person__name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #b01b34;
+    margin-bottom: .35rem;
+}
+.wish-list {
+    margin: 0;
+    padding-left: 1.25rem;
+}
+.wish-list li {
+    padding: .2rem 0;
+}
+.wish-list li::marker {
+    content: '🎁  ';
+    font-size: .9em;
+}
+.wish-list a {
+    color: #0f6b3a;
+    font-weight: 600;
+}
+.wish-list a::after {
+    content: ' ↗';
+    font-size: .85em;
+}
+.wish-empty {
+    color: #6b7280;
+    font-style: italic;
+    margin-bottom: 0;
+}
+
+/* Editable list on the account page */
+.wish-list--edit li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    padding: .45rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.wish-list--edit li:has(.wish-edit) {
+    display: list-item;
+}
+.wish-text {
+    flex: 1 1 12rem;
+    overflow-wrap: anywhere;
+}
+.wish-actions {
+    display: flex;
+    gap: .35rem;
+}
+.wish-add {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-top: 1rem;
+}
+.wish-add__fields {
+    flex: 1 1 16rem;
+    display: grid;
+    gap: .5rem;
+}
+.wish-add .btn {
+    align-self: flex-start;
+}
+.wish-add .form-error {
+    flex-basis: 100%;
+}
+
+/* Home page: who you are gifting */
+.giftee-name {
+    display: inline-block;
+    font-size: clamp(3rem, 8vw, 4.5rem);
+    line-height: 1.1;
+}
+.giftee-note {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-size: 1.05rem;
+    margin: .75rem 0 .25rem;
+}
+.result-text .wish-list {
+    display: inline-block;
+    text-align: left;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-size: 1.1rem;
+}
+.result-text .wish-list a {
+    color: #ffe9a8;
+}
+
+/* Share links on the account page */
+.share-box {
+    margin-top: 1rem;
+    padding-top: .85rem;
+    border-top: 1px dashed rgba(10, 54, 34, 0.2);
+}
+.share-box .form-control[readonly] {
+    background: #f6f8f7;
+    font-size: .85rem;
+}
+
+/* Organizer draw panel */
+.organizer-badge {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-size: .8rem;
+    font-weight: 600;
+    vertical-align: middle;
+    background: #c41e3a;
+}
+.codes-table {
+    max-width: 28rem;
+}
+.codes-table code {
+    color: #0a3622;
+    font-size: .95rem;
+}
+.year-input {
+    max-width: 9rem;
+}
+.participants {
+    display: grid;
+    gap: .5rem;
+}
+.participants__household {
+    padding: .5rem .75rem;
+    border-radius: .75rem;
+    background: #f3f6f4;
+}
+.participants__title {
+    font-weight: 700;
+    color: #0a3622;
+    font-size: .9rem;
+    margin-bottom: .15rem;
+}
+
+/* Home page signed-in view */
+.signup-nudge {
+    font-weight: 600;
+}
+.signup-nudge a {
+    color: #b01b34;
+}
+.household-reveal {
+    padding-top: 1rem;
+    border-top: 1px dashed rgba(10, 54, 34, 0.2);
+}
+
+/* Admin page */
+.admin-people {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.admin-person {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    padding: .55rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.admin-person:last-child {
+    border-bottom: 0;
+}
+.admin-person--editing {
+    display: block;
+}
+.admin-person__main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .35rem;
+}
+.admin-person__name {
+    font-weight: 700;
+    margin-right: .25rem;
+}
+.admin-person__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+}
+.admin-badge {
+    font-weight: 600;
+    font-size: .72rem;
+}
+.admin-badge--adult { background: #0f6b3a; }
+.admin-badge--kid { background: #1e63b6; }
+.admin-badge--account { background: #6b7280; }
+.admin-badge--muted { background: transparent; color: #6b7280; border: 1px solid #d1d5db; }
+.admin-badge--draw { background: #b45309; }
+.admin-badge--organizer { background: #c41e3a; }
+.admin-add {
+    padding-top: 1rem;
+    border-top: 1px dashed rgba(10, 54, 34, 0.2);
+}
+.pairs-year {
+    width: auto;
+}
+.pairs-table {
+    max-width: 36rem;
+}
+/* Family-group cards sit inside a lit panel, so they stay plain */
+.admin-group {
+    background: #f6f8f7;
+    border: 1px solid rgba(10, 54, 34, 0.12);
+    border-radius: .85rem;
+    padding: .85rem 1rem;
+}
+.admin-group__title {
+    font-family: 'Mountains of Christmas', cursive;
+    font-weight: 700;
+    color: #0a3622;
+    font-size: 1.4rem;
+    margin-bottom: .25rem;
+}
+.family-code {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .4rem;
+    margin-bottom: .35rem;
+    font-size: .9rem;
+}
+.family-code__label {
+    color: #4b5563;
+}
+.family-code__value {
+    color: #0a3622;
+    background: #fff;
+    border: 1px dashed rgba(10, 54, 34, 0.35);
+    border-radius: .4rem;
+    padding: .1rem .45rem;
+    font-size: .95rem;
+}
+
+/* Bootstrap's .d-flex etc. use !important, which would beat the hidden attribute */
+[hidden] {
+    display: none !important;
+}
+
+/* In-page confirm/alert dialogs (common.js confirmDialog) */
+.santa-dialog {
+    border: 0;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    max-width: min(28rem, calc(100vw - 2rem));
+    color: #1f2937;
+    box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.35);
+}
+.santa-dialog::backdrop {
+    background: rgba(8, 26, 48, 0.6);
+}
+.santa-dialog__message {
+    margin-bottom: 1.25rem;
+    white-space: pre-line;
+}
+.santa-dialog__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: .5rem;
 }
