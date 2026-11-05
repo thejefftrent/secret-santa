@@ -157,24 +157,13 @@ function render(focusPersonId) {
 
 function personCard(person) {
   const isMe = person.id === user.id;
-  const canRemove = !user.isKid && !isMe && !person.hasAccount && !person.inDraw;
   return el(
     'div',
     { class: 'col-12 col-lg-6' },
     el(
       'section',
       { class: 'wish-card h-100' },
-      el(
-        'div',
-        { class: 'd-flex align-items-start justify-content-between gap-2' },
-        el('h2', { class: 'wish-card__title' }, isMe ? 'My wishes' : `${person.name}'s wishes`),
-        canRemove &&
-          el(
-            'button',
-            { type: 'button', class: 'btn btn-link btn-sm link-danger p-0', onclick: () => removePerson(person) },
-            `Remove ${person.name}`,
-          ),
-      ),
+      el('h2', { class: 'wish-card__title' }, isMe ? 'My wishes' : `${person.name}'s wishes`),
       person.items.length
         ? el('ul', { class: 'wish-list wish-list--edit' }, person.items.map((item) => itemRow(person, item)))
         : el('p', { class: 'wish-empty' }, 'No wishes yet. Add the first one below!'),
@@ -403,7 +392,7 @@ function shareBox(person) {
   );
 }
 
-// ---------- list and household changes ----------
+// ---------- list changes ----------
 
 async function removeItem(person, item) {
   const whose = person.id === user.id ? 'your' : `${person.name}'s`;
@@ -411,17 +400,6 @@ async function removeItem(person, item) {
   withSession(async () => {
     await api(`/api/items/${item.id}`, { method: 'DELETE' });
     person.items = person.items.filter((i) => i.id !== item.id);
-    showListError('');
-    render();
-  }, showListError);
-}
-
-async function removePerson(person) {
-  const wishes = person.items.length ? ` and their ${person.items.length} wish(es)` : '';
-  if (!(await confirmDialog(`Remove ${person.name}${wishes} from your household?`, { confirmLabel: 'Remove', danger: true }))) return;
-  withSession(async () => {
-    await api(`/api/household/${person.id}`, { method: 'DELETE' });
-    people = people.filter((p) => p.id !== person.id);
     showListError('');
     render();
   }, showListError);
