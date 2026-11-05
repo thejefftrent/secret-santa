@@ -1,7 +1,11 @@
-# Copy to .dev.vars for local development. In production, set SETUP_CODE as an
-# encrypted variable on the Pages project (see README).
+# Copy to .dev.vars for local development. In production, set these as
+# encrypted variables (secrets) on the Pages project (see README).
 #
 # SETUP_CODE lets an organizer (a name in ADMINS) create their first account
 # before any family-group codes exist. Everyone else signs up with their own
 # family group's code from the Admin page.
 SETUP_CODE=jolly-reindeer
+#
+# ADMIN_PASS is asked for when an organizer signs in as someone else
+# (Admin → Family groups → Sign in as). Leave it out to turn that off.
+ADMIN_PASS=north-pole-elves

@@ -5,6 +5,7 @@ import { password } from '../../lib/validate.js';
 // Change your own password. Signs out every other device.
 export async function onRequestPost({ request, env, data }) {
   const user = await data.requireUser();
+  if (user.impersonatedBy) throw new HttpError(403, `You're signed in as ${user.name}. Only they can change their password.`);
   const body = await readJson(request);
   const next = password(body.newPassword);
 

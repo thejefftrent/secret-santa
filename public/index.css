@@ -782,3 +782,21 @@ summary.panel__title {
     justify-content: flex-end;
     gap: .5rem;
 }
+
+/* An organizer signed in as someone else (common.js showSignedInChrome) */
+.impersonation-bar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem .9rem;
+    padding: .55rem 1rem;
+    background: #fcd34d;
+    color: #1f2937;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, 0.25);
+}

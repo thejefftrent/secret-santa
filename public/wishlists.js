@@ -1,4 +1,4 @@
-import { api, el, joinNames, wishList } from './common.js';
+import { api, el, joinNames, showSignedInChrome, wishList } from './common.js';
 
 const status = document.getElementById('status');
 const container = document.getElementById('households');
@@ -16,6 +16,12 @@ function signInPrompt() {
     ),
   );
 }
+
+// Only for the Admin link and the signed-in-as banner, so it never holds up the lists.
+api('/api/me').then(
+  (me) => showSignedInChrome(me.user),
+  () => {},
+);
 
 try {
   const { households } = await api('/api/wishlists');

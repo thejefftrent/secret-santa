@@ -1,3 +1,4 @@
+import { isAdminName } from '../../lib/admin.js';
 import { currentUser } from '../../lib/auth.js';
 import { HttpError, json } from '../../lib/http.js';
 
@@ -18,7 +19,11 @@ export async function onRequest(context) {
     }
 
     let user;
-    data.user = () => (user ??= currentUser(env.DB, request));
+    // An organizer's sign-in as someone else stops working as soon as they're taken out of ADMINS.
+    data.user = () =>
+      (user ??= currentUser(env.DB, request).then((u) =>
+        u?.impersonatedBy && !isAdminName(env, u.impersonatedBy.name) ? null : u,
+      ));
     data.requireUser = async () => {
       const signedIn = await data.user();
       if (!signedIn) throw new HttpError(401, 'Please sign in first.');

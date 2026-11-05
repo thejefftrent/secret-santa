@@ -1,5 +1,12 @@
 // Helpers shared by every page.
 
+// A page restored from the back/forward cache still shows whoever was signed in
+// when it was left, which may not be who is now (sign out, or an organizer
+// switching to someone else and back). Reload it so it asks the server again.
+addEventListener('pageshow', (event) => {
+  if (event.persisted) location.reload();
+});
+
 /** Calls the API and returns its JSON; throws an Error carrying the server's message. */
 export async function api(path, { method = 'GET', body } = {}) {
   const init = { method, credentials: 'same-origin', headers: {} };
@@ -88,11 +95,57 @@ export function alertDialog(message) {
   return confirmDialog(message, { cancelLabel: null });
 }
 
-/** Adds the Admin link to the nav for organizers (pages call this once they know who's signed in). */
-export function showAdminLink() {
+/**
+ * Page extras that depend on who's signed in. Pages call this with the user from
+ * /api/me (or null) every time they load it: organizers get the Admin link, and
+ * an organizer signed in as someone else gets a banner to switch back.
+ */
+export function showSignedInChrome(user) {
+  if (user?.isAdmin) showAdminLink();
+  document.querySelector('.impersonation-bar')?.remove();
+  if (user?.impersonatedBy) document.body.prepend(impersonationBanner(user));
+}
+
+function showAdminLink() {
   const nav = document.querySelector('.site-nav');
   if (!nav || nav.querySelector('a[href="/admin"]')) return;
   nav.append(el('a', { href: '/admin' }, 'Admin'));
+}
+
+function impersonationBanner(user) {
+  const organizer = user.impersonatedBy.name;
+  const back = el(
+    'button',
+    {
+      type: 'button',
+      class: 'btn btn-sm btn-dark',
+      onclick: async () => {
+        back.disabled = true;
+        try {
+          await api('/api/impersonation', { method: 'DELETE' });
+        } catch (err) {
+          back.disabled = false;
+          // 400: already switched back (e.g. in another tab), so the Admin page works as is.
+          if (err.status !== 400) {
+            await alertDialog(
+              err.status === 401
+                ? `You were signed out: signing in as someone else only lasts an hour. Sign in as ${organizer} again.`
+                : err.message,
+            );
+            if (err.status !== 401) return;
+          }
+        }
+        location.replace('/admin');
+      },
+    },
+    `Back to ${organizer}`,
+  );
+  return el(
+    'div',
+    { class: 'impersonation-bar', role: 'status' },
+    el('span', {}, 'You’re signed in as ', el('b', {}, user.name), '. Everything you do here is done as them.'),
+    back,
+  );
 }
 
 /** "Jeff, Erinn, Ben & Milo" */

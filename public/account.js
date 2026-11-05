@@ -1,4 +1,4 @@
-import { alertDialog, api, confirmDialog, el, showAdminLink, wishContent } from './common.js';
+import { alertDialog, api, confirmDialog, el, showSignedInChrome, wishContent } from './common.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -68,6 +68,7 @@ async function signedOutAgain() {
 // ---------- signed out ----------
 
 async function showSignedOut() {
+  showSignedInChrome(null);
   selectTab(new URLSearchParams(location.search).get('tab') === 'signup' ? 'signup' : 'signin');
   $('greeting').textContent = "Sign in to tell Santa what you'd like this year.";
   $('signedIn').hidden = true;
@@ -136,10 +137,11 @@ function showSignedIn() {
       ? "Add what you'd like for Christmas, and keep your household's lists up to date."
       : "Add what you'd like for Christmas.";
   $('addMemberCol').hidden = user.isKid; // kids can't change their household
+  $('passwordCol').hidden = Boolean(user.impersonatedBy); // only they can change their password
   $('signedOut').hidden = true;
   $('signedIn').hidden = false;
   render();
-  if (user.isAdmin) showAdminLink();
+  showSignedInChrome(user);
 }
 
 function showListError(message) {

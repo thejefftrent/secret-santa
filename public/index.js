@@ -1,4 +1,4 @@
-import { api, el, showAdminLink, wishList } from './common.js';
+import { api, el, showSignedInChrome, wishList } from './common.js';
 
 // Home page: sign in with your name and password, then reveal who you're gifting.
 const $ = (id) => document.getElementById(id);
@@ -57,6 +57,7 @@ function renderSignedIn(user) {
 /** Loads the signed-in state; returns this user's own draw entry (or null). */
 async function load() {
   const me = await api('/api/me');
+  showSignedInChrome(me.user);
   if (!me.user) {
     santa = null;
     showView('signedOut');
@@ -64,7 +65,6 @@ async function load() {
   }
   santa = await api('/api/santa');
   renderSignedIn(me.user);
-  if (me.user.isAdmin) showAdminLink();
   return santa.people.find((p) => p.isMe) ?? null;
 }
 
