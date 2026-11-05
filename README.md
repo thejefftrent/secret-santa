@@ -23,7 +23,7 @@ It uses Pages rather than a Worker because trent.life's DNS stays at Google: Pag
 
 - **Signing up:** you type your first name the way it appears on the family list, choose a password (8 characters or more), and enter your **family code**. Capital letters and extra spaces don't matter in names or codes.
 - **Family codes:** each family group has its own code, like `jolly-reindeer-42` (about 175,000 possibilities). A code only works for names in its own group, so nobody can claim someone else's name. The app makes the codes; the organizer sees them on the Admin page and can replace one if it gets out. The organizers themselves (names in `ADMINS`) can only sign up with the **setup code** (`SETUP_CODE`, a Cloudflare secret). That way nobody else can claim an organizer's name, and the organizer can make their account before seeing any codes.
-- **Households and kids:** each person belongs to a household (a family group) and is either an adult or a kid. Adults manage everyone in their household, partner and kids alike: their lists, their share links, and seeing their Secret Santa person. Adults can also add household members and remove ones without their own account who aren't in this year's draw. Kids only see and change their own list and their own person. Everyone signed in, kids included, can read the Wishlists page.
+- **Households and kids:** each person belongs to a household (a family group) and is either an adult or a kid. Adults manage everyone in their household, partner and kids alike: their lists, their share links, and seeing their Secret Santa person. Only the organizer adds or removes people, from the Admin page. Kids only see and change their own list and their own person. Everyone signed in, kids included, can read the Wishlists page.
 - **Who can see wishes:** signed-in family can see every list. Anyone else needs a share link, which shows one person's list.
 - **Passwords:** stored as PBKDF2-SHA256 hashes with a per-user salt, using 25,000 iterations. Even a password change, which checks the old password and hashes the new one, stays under the free plan's 10 ms CPU limit per request. The iteration count is stored with each hash, so it can be raised later.
 - **Sessions:** an HttpOnly cookie that lasts 90 days. Only a hash of the token is stored.
@@ -60,7 +60,7 @@ npm run dev                           # http://localhost:8788
 npm test                              # draw algorithm tests
 ```
 
-To try the home page locally, load a draw with `npx wrangler d1 execute secret-santa --local --file draw-2026.sql`, or sign up as Jeff and draw names from My Account.
+To try the home page locally, load a draw with `npx wrangler d1 execute secret-santa --local --file draw-2026.sql`, or sign up as Jeff and draw names on the Admin page.
 
 To start over with a fresh local database, run `rm -rf .wrangler/state`, then `npm run db:migrate:local` again.
 
@@ -113,7 +113,7 @@ To start over with a fresh local database, run `rm -rf .wrangler/state`, then `n
 
 ## Every year
 
-1. Make sure everyone is on the site. Adults can add new babies and partners from **My Account → Add someone to your household**. Anything else, like a new household or someone moving, goes through **Admin → Family groups**.
+1. Make sure everyone is on the site. New babies and partners, new households and anyone moving all go through **Admin → Family groups**.
 2. Sign in as Jeff and go to **Admin → Secret Santa draw**:
    - Check the year.
    - Untick anyone sitting this year out.
@@ -131,9 +131,9 @@ Most of the upkeep happens on the **Admin** page:
 - **Someone forgot their password:** **Family groups → Reset sign-in**. They sign up again with their family group's code, and their wishes are kept.
 - **Someone needs help with their list, or you want to see what they see:** **Family groups → Sign in as**, then type the admin password (`ADMIN_PASS`). You land on their My Account page, signed in as them for up to an hour. Click **Back to Jeff** in the banner when you're done.
 - **A family code got out:** **Family groups → New code** next to that group. The old code stops working, and existing accounts aren't affected.
-- **New household, or someone moving:** **Family groups → Add someone** (pick "+ New family group") or **Edit**. If moving someone puts a giver and their giftee in the same household, the page warns you, without saying who.
+- **New person, new household, or someone moving:** **Family groups → Add someone** (pick their family group, or "+ New family group") or **Edit**. Only the organizer can add people. If moving someone puts a giver and their giftee in the same household, the page warns you, without saying who.
 - **Kid grew up:** **Edit**, then untick **Kid**.
-- **Removing someone:** first draw the current year again without them, then **Remove** them. Their account, wishes and share link go too.
+- **Removing someone:** first draw the current year again without them, then **Remove** them. Their account, wishes and share link go too. Only the organizer can remove people.
 
 Organizers are matched by name, so an organizer can't be renamed or removed until they're taken out of `ADMINS`.
 

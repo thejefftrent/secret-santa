@@ -136,7 +136,6 @@ function showSignedIn() {
     people.length > 1
       ? "Add what you'd like for Christmas, and keep your household's lists up to date."
       : "Add what you'd like for Christmas.";
-  $('addMemberCol').hidden = user.isKid; // kids can't change their household
   $('passwordCol').hidden = Boolean(user.impersonatedBy); // only they can change their password
   $('signedOut').hidden = true;
   $('signedIn').hidden = false;
@@ -158,24 +157,13 @@ function render(focusPersonId) {
 
 function personCard(person) {
   const isMe = person.id === user.id;
-  const canRemove = !user.isKid && !isMe && !person.hasAccount && !person.inDraw;
   return el(
     'div',
     { class: 'col-12 col-lg-6' },
     el(
       'section',
       { class: 'wish-card h-100' },
-      el(
-        'div',
-        { class: 'd-flex align-items-start justify-content-between gap-2' },
-        el('h2', { class: 'wish-card__title' }, isMe ? 'My wishes' : `${person.name}'s wishes`),
-        canRemove &&
-          el(
-            'button',
-            { type: 'button', class: 'btn btn-link btn-sm link-danger p-0', onclick: () => removePerson(person) },
-            `Remove ${person.name}`,
-          ),
-      ),
+      el('h2', { class: 'wish-card__title' }, isMe ? 'My wishes' : `${person.name}'s wishes`),
       person.items.length
         ? el('ul', { class: 'wish-list wish-list--edit' }, person.items.map((item) => itemRow(person, item)))
         : el('p', { class: 'wish-empty' }, 'No wishes yet. Add the first one below!'),
@@ -404,7 +392,7 @@ function shareBox(person) {
   );
 }
 
-// ---------- list and household changes ----------
+// ---------- list changes ----------
 
 async function removeItem(person, item) {
   const whose = person.id === user.id ? 'your' : `${person.name}'s`;
@@ -416,27 +404,6 @@ async function removeItem(person, item) {
     render();
   }, showListError);
 }
-
-async function removePerson(person) {
-  const wishes = person.items.length ? ` and their ${person.items.length} wish(es)` : '';
-  if (!(await confirmDialog(`Remove ${person.name}${wishes} from your household?`, { confirmLabel: 'Remove', danger: true }))) return;
-  withSession(async () => {
-    await api(`/api/household/${person.id}`, { method: 'DELETE' });
-    people = people.filter((p) => p.id !== person.id);
-    showListError('');
-    render();
-  }, showListError);
-}
-
-handleForm($('addMemberForm'), async () => {
-  const { person } = await api('/api/household', {
-    method: 'POST',
-    body: { name: $('memberName').value, isKid: $('memberRole').value === 'kid' },
-  });
-  $('memberName').value = '';
-  people.push(person);
-  render(person.id);
-});
 
 handleForm($('passwordForm'), async (form) => {
   await api('/api/password', {
