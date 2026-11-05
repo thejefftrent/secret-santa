@@ -129,7 +129,7 @@ function impersonationBanner(user) {
           if (err.status !== 400) {
             await alertDialog(
               err.status === 401
-                ? `You were signed out: signing in as someone else only lasts an hour. Sign in as ${organizer} again.`
+                ? `Your sign-in as ${user.name} has ended. It lasts up to an hour, and ends early if they're removed or a password changes. Sign in as ${organizer} again.`
                 : err.message,
             );
             if (err.status !== 401) return;

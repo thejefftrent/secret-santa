@@ -12,20 +12,12 @@ export async function onRequestPost({ request, env, data }) {
   const body = await readJson(request);
   const personId = id(body.personId, 'person');
 
-  const person = await env.DB.prepare(
-    `SELECT p.id, p.name, (a.person_id IS NOT NULL) AS hasAccount
-       FROM people p LEFT JOIN accounts a ON a.person_id = p.id
-      WHERE p.id = ?`,
-  )
-    .bind(personId)
-    .first();
+  // Anyone on the family list, with or without an account (e.g. to fill in a list for someone who hasn't signed up).
+  const person = await env.DB.prepare('SELECT id, name FROM people WHERE id = ?').bind(personId).first();
   if (!person) throw new HttpError(404, "That person isn't on the family list anymore. Reload the page.");
   if (person.id === admin.id) throw new HttpError(400, "You're already signed in as yourself.");
   // Another organizer would get the Admin page back, and could sign in as someone else in turn.
   if (isAdminName(env, person.name)) throw new HttpError(400, `${person.name} is an organizer, so you can't sign in as them.`);
-  if (!person.hasAccount) {
-    throw new HttpError(400, `${person.name} doesn't have an account yet. Edit their list from an adult in their family group instead.`);
-  }
 
   const expected = typeof env.ADMIN_PASS === 'string' ? env.ADMIN_PASS : '';
   if (!expected) {

@@ -161,8 +161,7 @@ function personRow(household, person) {
       'div',
       { class: 'admin-person__actions' },
       el('button', { type: 'button', class: 'btn btn-sm btn-outline-secondary', onclick: () => startEdit(person) }, 'Edit'),
-      person.hasAccount &&
-        !person.isMe &&
+      !person.isMe &&
         !person.isAdmin &&
         el(
           'button',
