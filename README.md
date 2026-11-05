@@ -6,7 +6,7 @@ The family Secret Santa site at **xmas.trent.life**, running on Cloudflare's fre
 - **Wishlists** (`/wishlists`): everyone's wishes, grouped by household. Only signed-in family can see this page.
 - **My Account** (`/account`): family members create an account and edit their wishlist. Adults can also edit the lists of everyone else in their household (partner and kids).
 - **Share links** (`/shared?t=…`): from My Account, you can turn on a read-only link to one person's list, for grandparents or friends without an account. You can replace the link or turn it off at any time.
-- **Admin** (`/admin`, organizer only): edit family groups (add, rename, move, mark as kid, remove, reset sign-ins), draw names for a year, and see who has whom for any year.
+- **Admin** (`/admin`, organizer only): edit family groups (add, rename, move, mark as kid, remove, reset sign-ins), sign in as someone to help with their list, draw names for a year, and see who has whom for any year.
 
 ## How it's built
 
@@ -30,8 +30,10 @@ It uses Pages rather than a Worker because trent.life's DNS stays at Google: Pag
 - **Throttling:** each attempt is counted before the password or code is checked, so a burst of parallel requests can't slip past. The limits:
   - Sign-in: 10 wrong passwords per name per device. A stranger can't lock you out from their own device, and there are backstops of 30 per device and 50 per name across all devices.
   - Sign-up: 10 tries per device and 20 per family group.
-  - Each limit lasts 15 minutes, except the family-group limit, which lasts an hour.
+  - Admin password (for **Sign in as**): 5 wrong tries per organizer and 10 per device.
+  - Each limit lasts 15 minutes, except the family-group and admin-password limits, which last an hour.
 - **Organizer:** the names in `ADMINS` in `wrangler.toml` (currently `Jeff`) get the **Admin** page, and an Admin link in the nav once signed in.
+- **Signing in as someone:** an organizer can click **Sign in as** next to anyone with an account on the Admin page, to see the site as they do or fix their list for them. It asks for the **admin password** (`ADMIN_PASS`, a Cloudflare secret) every time, on top of the organizer's own sign-in. The organizer's session is swapped for a one-hour session as that person. A banner on every page says who you're signed in as, and **Back to Jeff** swaps back. While signed in as someone you can't use the Admin page or change their password. You also can't sign in as another organizer or as someone without an account. Changing the organizer's password, or taking them out of `ADMINS`, ends these sessions too.
 
 ### The draw
 
@@ -52,7 +54,7 @@ Draws are kept by year, and the newest year is the one people see when they sign
 
 ```bash
 npm install
-cp .dev.vars.example .dev.vars        # sets SETUP_CODE=jolly-reindeer for local testing
+cp .dev.vars.example .dev.vars        # sets SETUP_CODE and ADMIN_PASS for local testing
 npm run db:migrate:local              # creates the tables and seeds the family
 npm run dev                           # http://localhost:8788
 npm test                              # draw algorithm tests
@@ -88,6 +90,11 @@ To start over with a fresh local database, run `rm -rf .wrangler/state`, then `n
    npx wrangler pages secret put SETUP_CODE --project-name secret-santa
    ```
    You can also set it under the project's **Settings → Variables and Secrets**. Redeploy afterwards (**Deployments → … → Retry deployment**) so the site picks it up. Once your account exists, you can delete the secret, but an organizer whose sign-in is reset will need it again.
+
+   Set the **admin password** the same way. The Admin page asks for it whenever an organizer signs in as someone else. Make it long, and different from your own password. Without it, **Sign in as** is turned off.
+   ```bash
+   npx wrangler pages secret put ADMIN_PASS --project-name secret-santa
+   ```
 6. **Load this year's draw.** The 2026 names were already drawn, so the 2026 draw is imported exactly as it was rather than drawn again. The import file is gitignored because it says who has whom. Run this from the folder that holds `draw-2026.sql`, then delete the file.
    ```bash
    npx wrangler d1 execute secret-santa --remote --file draw-2026.sql
@@ -122,6 +129,7 @@ To start over with a fresh local database, run `rm -rf .wrangler/state`, then `n
 Most of the upkeep happens on the **Admin** page:
 
 - **Someone forgot their password:** **Family groups → Reset sign-in**. They sign up again with their family group's code, and their wishes are kept.
+- **Someone needs help with their list, or you want to see what they see:** **Family groups → Sign in as**, then type the admin password (`ADMIN_PASS`). You land on their My Account page, signed in as them for up to an hour. Click **Back to Jeff** in the banner when you're done.
 - **A family code got out:** **Family groups → New code** next to that group. The old code stops working, and existing accounts aren't affected.
 - **New household, or someone moving:** **Family groups → Add someone** (pick "+ New family group") or **Edit**. If moving someone puts a giver and their giftee in the same household, the page warns you, without saying who.
 - **Kid grew up:** **Edit**, then untick **Kid**.
@@ -138,4 +146,4 @@ These are command-line only. Drop `--remote` to run them locally instead.
 npx wrangler d1 export secret-santa --remote --output backup.sql
 ```
 
-**Change the database schema.** Add a new numbered file in `migrations/`, then run `npm run db:migrate:local` and `npm run db:migrate:remote`.
+**Change the database schema.** Add a new numbered file in `migrations/`, then run `npm run db:migrate:local` and `npm run db:migrate:remote`. Run the remote migration before you push the code that needs it: every push to `main` deploys straight away.

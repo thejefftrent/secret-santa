@@ -1,4 +1,4 @@
-import { alertDialog, api, confirmDialog, el, joinNames } from './common.js';
+import { alertDialog, api, confirmDialog, el, joinNames, showSignedInChrome } from './common.js';
 
 // Organizer page: family groups, running the draw, and who has whom.
 const $ = (id) => document.getElementById(id);
@@ -10,7 +10,11 @@ let editingId = null; // person whose row is in edit mode
 async function start() {
   try {
     const me = await api('/api/me');
+    showSignedInChrome(me.user);
     if (!me.user) return gate('Sign in as the organizer to use this page.', true);
+    if (me.user.impersonatedBy) {
+      return gate(`You're signed in as ${me.user.name}. Go back to ${me.user.impersonatedBy.name} (the banner at the top) to use this page.`, false);
+    }
     if (!me.user.isAdmin) return gate('Only the Secret Santa organizer can use this page.', false);
     await refresh();
     $('status').hidden = true;
@@ -159,6 +163,14 @@ function personRow(household, person) {
       el('button', { type: 'button', class: 'btn btn-sm btn-outline-secondary', onclick: () => startEdit(person) }, 'Edit'),
       person.hasAccount &&
         !person.isMe &&
+        !person.isAdmin &&
+        el(
+          'button',
+          { type: 'button', class: 'btn btn-sm btn-outline-secondary', onclick: () => signInAs(person) },
+          'Sign in as',
+        ),
+      person.hasAccount &&
+        !person.isMe &&
         el(
           'button',
           { type: 'button', class: 'btn btn-sm btn-outline-secondary', onclick: () => resetSignIn(person) },
@@ -230,6 +242,72 @@ function startEdit(person) {
 function cancelEdit() {
   editingId = null;
   renderFamily();
+}
+
+/** Asks for ADMIN_PASS, then signs this browser in as the person and opens their My Account page. */
+function signInAs(person) {
+  const pass = el('input', {
+    class: 'form-control',
+    type: 'password',
+    id: 'adminPass',
+    autocomplete: 'off',
+    autocapitalize: 'off',
+    spellcheck: 'false',
+    required: true,
+  });
+  const error = el('p', { class: 'form-error mt-2 mb-0', role: 'alert' });
+  const submit = el('button', { type: 'submit', class: 'btn btn-success cta-btn' }, `Sign in as ${person.name}`);
+  const dialog = el(
+    'dialog',
+    { class: 'santa-dialog' },
+    el(
+      'form',
+      {
+        novalidate: true,
+        onsubmit: async (event) => {
+          event.preventDefault();
+          error.textContent = '';
+          if (!pass.value) {
+            error.textContent = 'Type the admin password first.';
+            return pass.focus();
+          }
+          submit.disabled = true;
+          try {
+            await api('/api/impersonation', { method: 'POST', body: { personId: person.id, adminPass: pass.value } });
+            pass.value = '';
+            // replace(): Back shouldn't land on the organizer's Admin page, which is now someone else's session.
+            location.replace('/account');
+          } catch (err) {
+            submit.disabled = false;
+            if (err.status === 401) {
+              dialog.close();
+              return start();
+            }
+            error.textContent = err.message;
+            pass.select();
+          }
+        },
+      },
+      el(
+        'p',
+        { class: 'santa-dialog__message' },
+        `See the site as ${person.name} and change their lists for them. You'll be signed in as them for up to an hour; the banner at the top brings you back.`,
+      ),
+      el('label', { class: 'form-label', for: 'adminPass' }, 'Admin password'),
+      pass,
+      error,
+      el(
+        'div',
+        { class: 'santa-dialog__actions mt-3' },
+        el('button', { type: 'button', class: 'btn btn-outline-secondary', onclick: () => dialog.close() }, 'Cancel'),
+        submit,
+      ),
+    ),
+  );
+  dialog.addEventListener('close', () => dialog.remove());
+  document.body.append(dialog);
+  dialog.showModal();
+  pass.focus();
 }
 
 async function resetSignIn(person) {
