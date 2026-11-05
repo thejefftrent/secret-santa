@@ -25,7 +25,7 @@ export async function onRequestPost({ request, env }) {
   )
     .bind(name)
     .first();
-  if (!person) throw new HttpError(404, `${name} isn't on the family list yet. Ask someone in your household to add you.`);
+  if (!person) throw new HttpError(404, `${name} isn't on the family list yet. Ask the organizer to add you.`);
   if (person.taken) throw new HttpError(409, `${person.name} already has an account. Try signing in instead.`);
 
   const attempt = await reserveAttempt(env.DB, [

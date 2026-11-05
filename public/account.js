@@ -136,7 +136,6 @@ function showSignedIn() {
     people.length > 1
       ? "Add what you'd like for Christmas, and keep your household's lists up to date."
       : "Add what you'd like for Christmas.";
-  $('addMemberCol').hidden = user.isKid; // kids can't change their household
   $('passwordCol').hidden = Boolean(user.impersonatedBy); // only they can change their password
   $('signedOut').hidden = true;
   $('signedIn').hidden = false;
@@ -427,16 +426,6 @@ async function removePerson(person) {
     render();
   }, showListError);
 }
-
-handleForm($('addMemberForm'), async () => {
-  const { person } = await api('/api/household', {
-    method: 'POST',
-    body: { name: $('memberName').value, isKid: $('memberRole').value === 'kid' },
-  });
-  $('memberName').value = '';
-  people.push(person);
-  render(person.id);
-});
 
 handleForm($('passwordForm'), async (form) => {
   await api('/api/password', {
